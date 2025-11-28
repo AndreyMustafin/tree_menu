@@ -1,0 +1,8 @@
+<div class="menu-tree">
+
+    {% for item in menu_objects %}
+        <h1>{{ item.name }}</h1>
+    {% empty %}
+    <li>No items found</li>
+{% endfor %}
+</div>
