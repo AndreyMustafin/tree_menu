@@ -8,7 +8,7 @@ def menu_render(request, name=None):
         with connection.cursor() as cur:
             cur.execute("""
                     WITH RECURSIVE menu_path AS (
-                        -- Начальная точка: элемент с заданным именем
+
                         SELECT 
                             id,
                             name,
@@ -21,35 +21,33 @@ def menu_render(request, name=None):
                     
                         UNION ALL
                     
-                        -- Часть 1: Идем вверх к родителям
                         SELECT 
                             m.id,
                             m.name,
                             m.url,
                             m.parent_id,
-                            mp.level - 1, -- Отрицательные уровни для родителей
+                            mp.level - 1,
                             'parent' as direction
                         FROM menu_menu m
                         INNER JOIN menu_path mp ON m.id = mp.parent_id
-                        WHERE mp.direction IN ('current', 'parent') -- Только от текущего и родителей
+                        WHERE mp.direction IN ('current', 'parent')
                     
                         UNION ALL
                     
-                        -- Часть 2: Идем вниз к детям (только один уровень)
                         SELECT 
                             m.id,
                             m.name,
                             m.url,
                             m.parent_id,
-                            mp.level + 1, -- Положительные уровни для детей
+                            mp.level + 1,
                             'child' as direction
                         FROM menu_menu m
                         INNER JOIN menu_path mp ON m.parent_id = mp.id
-                        WHERE mp.direction = 'current' -- Только от исходного элемента
+                        WHERE mp.direction = 'current'
                     )
                     SELECT DISTINCT * FROM menu_path 
                     ORDER BY 
-                        level ASC; -- Сортируем по уровню: родители -> текущий -> дети
+                        level ASC; 
                 """, [name])
 
             result = cur.fetchall()
@@ -73,5 +71,5 @@ def menu_render(request, name=None):
         menu = Menu.objects.filter(parent=None).prefetch_related('children')
 
         context = {"menu_objects": {"parents": None, "current": menu, "children": None}}
-    # print(context)
+
     return render(request, 'menu/main.html', context=context)
