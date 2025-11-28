@@ -1,24 +1,13 @@
-{% load extras %}
+{% load menu_render %}
 
-<div>
-    {% for item in menu_objects.parents %}
-        <a href="{% url 'named_menu' name=item.url|extract_menu_name %}">
-            <h1 style="margin-left: {{ forloop.counter0 }}rem">{{ item.name }}</h1>
-        </a>
-    {% empty %}
-    {% endfor %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Site</title>
+</head>
+<body>
+    <!-- Основное меню -->
+    {% draw_menu 'main_menu' %}
 
-    {% for item in menu_objects.current %}
-        <div>
-            <h1 style="margin-left: {{ menu_objects.parents|length }}rem">{{ item.name }}</h1>
-        </div>
-    {% empty %}
-    {% endfor %}
-
-    {% for item in menu_objects.children %}
-        <a href="{% url 'named_menu' name=item.url|extract_menu_name %}">
-            <h1 style="margin-left: {{ menu_objects.parents|length|add:1 }}rem">{{ item.name }}</h1>
-        </a>
-    {% empty %}
-    {% endfor %}
-</div>
+</body>
+</html>

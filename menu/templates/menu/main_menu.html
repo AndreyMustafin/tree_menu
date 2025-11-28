@@ -1,0 +1,24 @@
+{% load menu_render %}
+
+<div>
+    {% for item in menu_objects.parents %}
+        <a href="{% url 'named_menu' name=item.url|extract_menu_name %}">
+            <h1 style="margin-left: {{ forloop.counter0 }}rem">{{ item.name }}</h1>
+        </a>
+    {% empty %}
+    {% endfor %}
+
+    {% for item in menu_objects.current %}
+        <a href="{% url 'named_menu' name=item.url|extract_menu_name %}">
+            <h1 style="margin-left: {{ menu_objects.parents|length }}rem">{{ item.name }}</h1>
+        </a>
+    {% empty %}
+    {% endfor %}
+
+    {% for item in menu_objects.children %}
+        <a href="{% url 'named_menu' name=item.url|extract_menu_name %}">
+            <h1 style="margin-left: {{ menu_objects.parents|length|add:1 }}rem">{{ item.name }}</h1>
+        </a>
+    {% empty %}
+    {% endfor %}
+</div>

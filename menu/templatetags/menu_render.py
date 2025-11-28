@@ -1,5 +1,8 @@
 from django import template
 from urllib.parse import urlparse
+from django.shortcuts import render
+from django.db import connection
+from ..models import Menu
 
 register = template.Library()
 
@@ -16,3 +19,9 @@ def extract_menu_name(url):
         return parts[-1] if parts else ''
 
     return url
+
+
+@register.inclusion_tag('menu/main_menu.html', takes_context=True)
+def draw_menu(context, name=None):
+
+    return context
