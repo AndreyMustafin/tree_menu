@@ -1,8 +1,23 @@
+{% load extras %}
+
 <div class="menu-tree">
 
-    {% for item in menu_objects %}
+    {% for item in menu_objects.parents %}
+        <a href="{% url 'named_menu' name=item.url|extract_menu_name %}">
         <h1>{{ item.name }}</h1>
+        </a>
     {% empty %}
-    <li>No items found</li>
-{% endfor %}
+    {% endfor %}
+    {% for item in menu_objects.current %}
+        <a href="{% url 'named_menu' name=item.url|extract_menu_name %}">
+        <h1>{{ item.name }}</h1>
+        </a>
+    {% empty %}
+    {% endfor %}
+    {% for item in menu_objects.children %}
+        <a href="{% url 'named_menu' name=item.url|extract_menu_name %}">
+        <h1>{{ item.name }}</h1>
+        </a>
+    {% empty %}
+    {% endfor %}
 </div>

@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.urls import reverse
+from urllib.parse import urlparse
 
 # Create your models here.
 
